@@ -1,321 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#08090b">
-  <meta name="description" content="Premium sub-surface glass engraving artwork for glenn.cloud">
-  <title>glenn.cloud — Celestial Glass Crest</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --ink: #07090c;
-      --ivory: #f5f0e6;
-      --silver: #bcc6cf;
-      --muted: #747e87;
-      --gold: #b99b63;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { color-scheme: dark; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--ivory);
-      background:
-        radial-gradient(circle at 50% -10%, rgba(114, 137, 157, .16), transparent 36rem),
-        radial-gradient(circle at 12% 58%, rgba(58, 79, 98, .12), transparent 30rem),
-        linear-gradient(145deg, #0c1014 0%, var(--ink) 54%, #050607 100%);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
-      display: grid;
-      place-items: center;
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .22;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
-      mix-blend-mode: soft-light;
-    }
-
-    main {
-      width: min(100%, 980px);
-      padding: clamp(28px, 6vw, 72px) 22px 54px;
-      text-align: center;
-    }
-
-    .eyebrow {
-      margin: 0 0 12px;
-      color: var(--gold);
-      font-size: .68rem;
-      font-weight: 600;
-      letter-spacing: .36em;
-      text-transform: uppercase;
-    }
-
-    h1 {
-      margin: 0;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: clamp(3.25rem, 8vw, 5.7rem);
-      font-weight: 500;
-      line-height: .94;
-      letter-spacing: -.04em;
-    }
-
-    h1 span { color: #8c959e; }
-
-    .lede {
-      max-width: 470px;
-      margin: 18px auto 30px;
-      color: var(--muted);
-      font-size: .78rem;
-      line-height: 1.7;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .toggle {
-      width: fit-content;
-      margin: 0 auto 26px;
-      padding: 4px;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 999px;
-      background: rgba(255,255,255,.035);
-      box-shadow: inset 0 1px rgba(255,255,255,.04);
-      display: flex;
-      gap: 3px;
-    }
-
-    .toggle button {
-      appearance: none;
-      border: 0;
-      border-radius: 999px;
-      padding: 10px 18px;
-      color: #777f86;
-      background: transparent;
-      font: 500 .7rem/1 Inter, sans-serif;
-      letter-spacing: .08em;
-      cursor: pointer;
-      transition: color .25s ease, background .25s ease, box-shadow .25s ease;
-    }
-
-    .toggle button[aria-selected="true"] {
-      color: #eef2f5;
-      background: rgba(231, 238, 245, .11);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 5px 18px rgba(0,0,0,.25);
-    }
-
-    .stage {
-      width: min(82vw, 610px);
-      aspect-ratio: 1;
-      margin: 0 auto;
-      position: relative;
-      perspective: 1100px;
-    }
-
-    .panel {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      transition: opacity .35s ease, transform .5s cubic-bezier(.2,.7,.2,1), visibility .35s;
-    }
-
-    .panel[hidden] {
-      display: grid;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: scale(.975) rotateX(2deg);
-    }
-
-    .glass-block {
-      position: relative;
-      width: 91%;
-      height: 91%;
-      border: 1px solid rgba(225, 239, 250, .22);
-      border-radius: 18px;
-      background:
-        linear-gradient(125deg, rgba(255,255,255,.13), transparent 18%, transparent 78%, rgba(189,215,233,.06)),
-        radial-gradient(circle at 48% 45%, rgba(75,109,136,.16), transparent 52%),
-        linear-gradient(145deg, rgba(28,39,48,.48), rgba(7,11,15,.72));
-      box-shadow:
-        inset 0 0 0 5px rgba(213,231,244,.022),
-        inset 0 0 70px rgba(138,180,211,.07),
-        inset 18px 18px 36px rgba(255,255,255,.018),
-        0 34px 80px rgba(0,0,0,.62),
-        0 0 100px rgba(96,138,167,.07);
-      transform: rotateX(1deg) rotateY(-1deg);
-    }
-
-    .glass-block::before,
-    .glass-block::after {
-      content: "";
-      position: absolute;
-      pointer-events: none;
-      border-radius: inherit;
-    }
-
-    .glass-block::before {
-      inset: 8px;
-      border: 1px solid rgba(230,242,250,.09);
-      box-shadow: inset 0 0 28px rgba(211,234,250,.03);
-    }
-
-    .glass-block::after {
-      inset: 0;
-      background: linear-gradient(132deg, rgba(255,255,255,.13), transparent 9% 83%, rgba(177,210,233,.05));
-      clip-path: polygon(0 0, 100% 0, 97% 3%, 3% 3%, 3% 97%, 0 100%);
-    }
-
-    .crest {
-      position: absolute;
-      inset: 8.5%;
-      width: 83%;
-      height: 83%;
-      object-fit: contain;
-      opacity: .92;
-      filter:
-        drop-shadow(0 0 1px rgba(255,255,255,.95))
-        drop-shadow(0 0 5px rgba(199,225,244,.44))
-        drop-shadow(0 0 14px rgba(102,161,203,.2));
-    }
-
-    .raw-block {
-      width: 91%;
-      height: 91%;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      border: 1px solid #252a2e;
-      background: #000;
-      box-shadow: 0 28px 70px rgba(0,0,0,.58), inset 0 0 0 1px rgba(255,255,255,.02);
-    }
-
-    .raw-block img {
-      width: 83%;
-      height: 83%;
-      object-fit: contain;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-      margin-top: 28px;
-      flex-wrap: wrap;
-    }
-
-    .button {
-      min-width: 158px;
-      padding: 13px 20px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: .71rem;
-      font-weight: 600;
-      letter-spacing: .13em;
-      text-transform: uppercase;
-      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-    }
-
-    .button.primary {
-      color: #0b0c0e;
-      background: linear-gradient(135deg, #f0f2f2, #aebac3);
-      box-shadow: 0 10px 25px rgba(159,180,196,.14);
-    }
-
-    .button.secondary {
-      color: #a1a9b0;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.025);
-    }
-
-    .button:hover { transform: translateY(-2px); }
-    .button.primary:hover { box-shadow: 0 14px 30px rgba(159,180,196,.22); }
-    .button.secondary:hover { background: rgba(255,255,255,.06); }
-
-    footer {
-      margin-top: 26px;
-      color: #505860;
-      font-size: .66rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 560px) {
-      main { padding-inline: 14px; }
-      .lede { margin-bottom: 22px; font-size: .65rem; }
-      .stage { width: min(94vw, 500px); }
-      .toggle button { padding: 9px 13px; font-size: .62rem; }
-      .glass-block, .raw-block { width: 96%; height: 96%; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>glenn.cloud — Depth Map Sizer</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e0e0e0;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px}
+h1{font-size:1.4rem;margin-bottom:5px;font-weight:400}
+.sub{color:#888;font-size:.85rem;margin-bottom:20px}
+.canvas-wrap{background:#111;border:1px solid #333;border-radius:8px;padding:20px;margin-bottom:15px;display:flex;justify-content:center;align-items:center;min-height:300px}
+canvas{max-width:100%;max-height:400px;image-rendering:pixelated}
+.controls{display:flex;gap:15px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:15px}
+label{font-size:.85rem;color:#aaa}
+input[type=range]{width:180px;accent-color:#4a9eff}
+.val{font-size:.85rem;color:#4a9eff;min-width:70px;text-align:left}
+.btns{display:flex;gap:10px}
+button{background:#4a9eff;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.85rem}
+button:hover{background:#3a8eef}
+button.sec{background:#333}
+.info{font-size:.75rem;color:#666;margin-top:10px;text-align:center;max-width:400px}
+</style>
 </head>
 <body>
-  <main>
-    <p class="eyebrow">Celestial Domain Crest</p>
-    <h1>glenn<span>.cloud</span></h1>
-    <p class="lede">A point-forged emblem created for light, crystal and permanent display.</p>
-
-    <div class="toggle" role="tablist" aria-label="Artwork preview mode">
-      <button id="glass-tab" type="button" role="tab" aria-selected="true" aria-controls="glass-panel">Glass Preview</button>
-      <button id="raw-tab" type="button" role="tab" aria-selected="false" aria-controls="raw-panel">Engraving File</button>
-    </div>
-
-    <div class="stage">
-      <section class="panel" id="glass-panel" role="tabpanel" aria-labelledby="glass-tab">
-        <div class="glass-block">
-          <img class="crest" src="glenn-cloud.svg" alt="glenn.cloud cloud crest glowing inside a glass block">
-        </div>
-      </section>
-
-      <section class="panel" id="raw-panel" role="tabpanel" aria-labelledby="raw-tab" hidden>
-        <div class="raw-block">
-          <img src="glenn-cloud.svg" alt="Raw white-on-black engraving artwork">
-        </div>
-      </section>
-    </div>
-
-    <div class="actions">
-      <a class="button primary" href="glenn-cloud.svg" download="glenn-cloud.svg">Download SVG</a>
-      <a class="button secondary" href="glenn-cloud.svg" target="_blank" rel="noopener">Open artwork</a>
-    </div>
-
-    <footer>500 × 500 vector · white engraving geometry · transparent ground</footer>
-  </main>
-
-  <script>
-    const tabs = [...document.querySelectorAll('[role="tab"]')];
-    const panels = [...document.querySelectorAll('[role="tabpanel"]')];
-
-    function selectTab(selected) {
-      tabs.forEach((tab) => tab.setAttribute('aria-selected', String(tab === selected)));
-      panels.forEach((panel) => { panel.hidden = panel.id !== selected.getAttribute('aria-controls'); });
-    }
-
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => selectTab(tab));
-      tab.addEventListener('keydown', (event) => {
-        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
-        event.preventDefault();
-        const next = tabs[(tabs.indexOf(tab) + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
-        next.focus();
-        selectTab(next);
-      });
-    });
-  </script>
+<h1>Depth Map — Adjustable Sizing</h1>
+<p class="sub">Set your engraving dimensions, download, import to XCS</p>
+<div class="canvas-wrap"><canvas id="cv"></canvas></div>
+<div class="controls">
+<label>Size (px):</label>
+<input type="range" id="sz" min="100" max="2000" step="10" value="960">
+<span class="val" id="szv">960 × 960</span>
+</div>
+<div class="controls">
+<label>Invert:</label>
+<input type="checkbox" id="inv">
+<label style="margin-left:15px">Mirror:</label>
+<input type="checkbox" id="mir">
+</div>
+<div class="btns">
+<button onclick="dl()">Download PNG</button>
+<button class="sec" onclick="dl(true)">Download Inverted</button>
+</div>
+<p class="info">For xTool F2 Ultra UV sub-surface engraving. Darker pixels = shallower, brighter = deeper. Black background stays clear glass.</p>
+<script>
+const img=new Image();img.crossOrigin='anonymous';img.onload=()=>{draw()};img.src='glenn-depth-map.png';
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+function draw(){
+const sz=+document.getElementById('sz').value;
+const inv=document.getElementById('inv').checked;
+const mir=document.getElementById('mir').checked;
+document.getElementById('szv').textContent=sz+' × '+sz;
+cv.width=sz;cv.height=sz;
+ctx.save();
+if(mir){ctx.translate(sz,0);ctx.scale(-1,1)}
+ctx.drawImage(img,0,0,sz,sz);
+ctx.restore();
+if(inv){const d=ctx.getImageData(0,0,sz,sz);for(let i=0;i<d.data.length;i+=4){d.data[i]=255-d.data[i];d.data[i+1]=255-d.data[i+1];d.data[i+2]=255-d.data[i+2]}ctx.putImageData(d,0,0)}
+}
+document.getElementById('sz').oninput=draw;
+document.getElementById('inv').onchange=draw;
+document.getElementById('mir').onchange=draw;
+function dl(forceInv){
+const sz=+document.getElementById('sz').value;
+const inv=forceInv||document.getElementById('inv').checked;
+const mir=document.getElementById('mir').checked;
+const tc=document.createElement('canvas');tc.width=sz;tc.height=sz;
+const tx=tc.getContext('2d');
+tx.save();if(mir){tx.translate(sz,0);tx.scale(-1,1)}tx.drawImage(img,0,0,sz,sz);tx.restore();
+if(inv){const d=tx.getImageData(0,0,sz,sz);for(let i=0;i<d.data.length;i+=4){d.data[i]=255-d.data[i];d.data[i+1]=255-d.data[i+1];d.data[i+2]=255-d.data[i+2]}tx.putImageData(d,0,0)}
+const a=document.createElement('a');a.download='glenn-depth-'+sz+'px.png';a.href=tc.toDataURL('image/png');a.click()
+}
+</script>
 </body>
 </html>
