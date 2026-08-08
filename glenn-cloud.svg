@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <!--
+    glenn.cloud — Sub-surface laser engraving design
+    - Pure monochrome (black on white)
+    - Bold, clean vector paths optimized for laser dot-matrix engraving
+    - Circular badge with geometric cloud + circuit traces
+    - 600x600 square aspect for cubic glass block
+  -->
+
+  <!-- Background -->
+  <rect width="600" height="600" fill="#ffffff"/>
+
+  <!-- ===== Outer Badge Ring ===== -->
+  <!-- Outer thick ring -->
+  <circle cx="300" cy="300" r="278" fill="none" stroke="#000000" stroke-width="6"/>
+  <!-- Inner thin ring (double-ring detail) -->
+  <circle cx="300" cy="300" r="262" fill="none" stroke="#000000" stroke-width="1.5"/>
+
+  <!-- Cardinal accent marks -->
+  <circle cx="300" cy="22" r="5" fill="#000000"/>
+  <circle cx="300" cy="578" r="5" fill="#000000"/>
+  <circle cx="22" cy="300" r="5" fill="#000000"/>
+  <circle cx="578" cy="300" r="5" fill="#000000"/>
+
+  <!-- ===== Geometric Cloud ===== -->
+  <!-- Cloud body: overlapping rounded rectangles + semicircles for a clean geometric look -->
+  <g fill="#000000">
+    <!-- Cloud base bar -->
+    <rect x="180" y="200" width="240" height="50" rx="25"/>
+    <!-- Left bump -->
+    <circle cx="210" cy="190" r="38"/>
+    <!-- Center-left bump -->
+    <circle cx="265" cy="170" r="48"/>
+    <!-- Center-right bump -->
+    <circle cx="335" cy="170" r="48"/>
+    <!-- Right bump -->
+    <circle cx="390" cy="190" r="38"/>
+  </g>
+
+  <!-- Cloud interior cutouts (circuit pattern) — white lines on the black cloud -->
+  <g fill="#ffffff">
+    <!-- Circuit nodes (small circles = connection points) -->
+    <circle cx="225" cy="218" r="6"/>
+    <circle cx="270" cy="195" r="6"/>
+    <circle cx="300" cy="218" r="7"/>
+    <circle cx="330" cy="195" r="6"/>
+    <circle cx="375" cy="218" r="6"/>
+
+    <!-- Circuit traces (thin white rectangles connecting nodes) -->
+    <!-- Horizontal trace left -->
+    <rect x="231" y="215" width="33" height="2.5" rx="1"/>
+    <!-- Diagonal trace up to center -->
+    <rect x="271" y="201" width="2.5" height="14" rx="1"/>
+    <rect x="273" y="213" width="20" height="2.5" rx="1"/>
+    <!-- Horizontal trace center -->
+    <rect x="307" y="215" width="17" height="2.5" rx="1"/>
+    <!-- Diagonal trace up right -->
+    <rect x="326" y="201" width="2.5" height="14" rx="1"/>
+    <rect x="326" y="213" width="43" height="2.5" rx="1"/>
+  </g>
+
+  <!-- Small antenna/signal lines above cloud (tech accent) -->
+  <g stroke="#000000" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <line x1="285" y1="110" x2="285" y2="95"/>
+    <line x1="300" y1="105" x2="300" y2="85"/>
+    <line x1="315" y1="110" x2="315" y2="95"/>
+  </g>
+  <circle cx="300" cy="78" r="4" fill="#000000"/>
+
+  <!-- ===== Divider Line ===== -->
+  <line x1="180" y1="285" x2="420" y2="285" stroke="#000000" stroke-width="1.5"/>
+
+  <!-- Small decorative diamonds on divider -->
+  <g fill="#000000">
+    <rect x="178" y="281" width="8" height="8" rx="1" transform="rotate(45 182 285)"/>
+    <rect x="414" y="281" width="8" height="8" rx="1" transform="rotate(45 418 285)"/>
+  </g>
+
+  <!-- ===== Typography ===== -->
+  <!-- "glenn" — refined, light weight sans-serif -->
+  <text x="300" y="380"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="72" font-weight="300"
+        letter-spacing="2"
+        text-anchor="middle"
+        fill="#000000">glenn</text>
+
+  <!-- ".cloud" — lighter, smaller, wider spacing -->
+  <text x="300" y="438"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="38" font-weight="200"
+        letter-spacing="8"
+        text-anchor="middle"
+        fill="#000000">.cloud</text>
+
+  <!-- ===== Bottom Badge Text ===== -->
+  <!-- Decorative bottom flourish -->
+  <g fill="#000000">
+    <!-- Small hexagon accents -->
+    <polygon points="270,475 278,470 286,475 286,485 278,490 270,485" stroke="#000000" stroke-width="1.5" fill="none"/>
+    <polygon points="314,475 322,470 330,475 330,485 322,490 314,485" stroke="#000000" stroke-width="1.5" fill="none"/>
+    <!-- Center dot between hexagons -->
+    <circle cx="300" cy="480" r="3"/>
+    <!-- Connecting lines -->
+    <line x1="286" y1="480" x2="297" y2="480" stroke="#000000" stroke-width="1.5"/>
+    <line x1="303" y1="480" x2="314" y2="480" stroke="#000000" stroke-width="1.5"/>
+  </g>
+
+  <!-- "EST. 2026" or similar small text at bottom arc -->
+  <defs>
+    <!-- Bottom arc text path -->
+    <path id="bottomArc" d="M 120 300 A 180 180 0 0 0 480 300" fill="none"/>
+    <!-- Top arc text path -->
+    <path id="topArc" d="M 120 300 A 180 180 0 0 1 480 300" fill="none"/>
+  </defs>
+
+  <!-- Top arc text -->
+  <text font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="14" font-weight="500"
+        letter-spacing="6"
+        fill="#000000">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">
+      ◆ DIGITAL IDENTITY ◆
+    </textPath>
+  </text>
+
+  <!-- Bottom arc text -->
+  <text font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="14" font-weight="400"
+        letter-spacing="4"
+        fill="#000000">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">
+      PREMIUM DOMAIN
+    </textPath>
+  </text>
+
+</svg>

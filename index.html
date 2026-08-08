@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>glenn.cloud — Glass Block Engraving Design</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0f;
+      color: #e0e0e0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 200;
+      letter-spacing: 4px;
+      color: #888;
+      margin-bottom: 8px;
+      text-transform: lowercase;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #555;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+    }
+
+    /* Glass block preview */
+    .glass-stage {
+      position: relative;
+      width: 500px;
+      max-width: 90vw;
+      aspect-ratio: 1;
+      margin-bottom: 40px;
+    }
+
+    .glass-cube {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      /* Simulate frosted/ smoked glass with subtle gradient and inner shadow */
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(100,150,255,0.03) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(20,20,30,0.6) 0%, rgba(40,40,55,0.3) 50%, rgba(15,15,25,0.7) 100%);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow:
+        inset 0 0 80px rgba(0,0,0,0.5),
+        inset 0 2px 0 rgba(255,255,255,0.05),
+        0 20px 60px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(255,255,255,0.03);
+      overflow: hidden;
+    }
+
+    /* Edge highlights to simulate glass refraction */
+    .glass-cube::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border-radius: 12px;
+      background: linear-gradient(135deg,
+        rgba(255,255,255,0.08) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(255,255,255,0.03) 100%);
+      pointer-events: none;
+    }
+
+    /* Corner glints */
+    .glass-cube::after {
+      content: '';
+      position: absolute;
+      top: 15px; left: 15px;
+      width: 40px; height: 40px;
+      border-top: 2px solid rgba(255,255,255,0.1);
+      border-left: 2px solid rgba(255,255,255,0.1);
+      border-radius: 4px 0 0 0;
+      pointer-events: none;
+    }
+
+    /* The SVG engraving — appears as white frost inside the glass */
+    .engraving {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: invert(1) brightness(2) drop-shadow(0 0 3px rgba(200,220,255,0.3));
+      opacity: 0.92;
+    }
+
+    .engraving svg {
+      width: 82%;
+      height: 82%;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #4a90d9, #2563eb);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(37,99,235,0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      color: #aaa;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    /* Toggle view */
+    .view-toggle {
+      display: flex;
+      gap: 4px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .toggle-btn {
+      padding: 8px 20px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      color: #666;
+      background: none;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-btn.active {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    /* White background preview */
+    .white-preview {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+
+    .white-preview svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .hidden { display: none !important; }
+
+    /* Info section */
+    .info {
+      max-width: 520px;
+      text-align: center;
+      color: #666;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      letter-spacing: 0.5px;
+    }
+
+    .info strong { color: #999; }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 0.75rem;
+      color: #333;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>glenn<span style="opacity:0.4">.cloud</span></h1>
+  <p class="subtitle">S U B S U R F A C E &nbsp; G L A S S &nbsp; E N G R A V I N G &nbsp; D E S I G N</p>
+
+  <!-- View Toggle -->
+  <div class="view-toggle">
+    <button class="toggle-btn active" onclick="showView('glass')">Glass Preview</button>
+    <button class="toggle-btn" onclick="showView('flat')">Engraving File</button>
+  </div>
+
+  <!-- Glass Preview -->
+  <div class="glass-stage" id="glass-view">
+    <div class="glass-cube">
+      <div class="engraving" id="engraving-mount"></div>
+    </div>
+  </div>
+
+  <!-- Flat White Preview (the actual SVG) -->
+  <div class="glass-stage hidden" id="flat-view">
+    <div class="white-preview" id="flat-mount"></div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <a class="btn btn-primary" href="glenn-cloud.svg" download>
+      ⬇ Download SVG
+    </a>
+    <a class="btn btn-secondary" href="glenn-cloud.svg" target="_blank">
+      Open SVG in New Tab
+    </a>
+  </div>
+
+  <!-- Info -->
+  <div class="info">
+    <p><strong>About this design:</strong> Created for sub-surface laser engraving into a glass crystal block. The SVG uses pure monochrome with bold, clean vector paths optimized for laser dot-matrix rendering. Upload the SVG to your engraving service (e.g., CrystalScribe, 3D Laser Gifts) when ordering.</p>
+  </div>
+
+  <p class="footer">◆ Premium Domain ◆</p>
+
+  <script>
+    // Load the SVG into both views
+    const svgUrl = 'glenn-cloud.svg';
+
+    fetch(svgUrl)
+      .then(r => r.text())
+      .then(svgText => {
+        document.getElementById('engraving-mount').innerHTML = svgText;
+        document.getElementById('flat-mount').innerHTML = svgText;
+      });
+
+    function showView(view) {
+      const glassView = document.getElementById('glass-view');
+      const flatView = document.getElementById('flat-view');
+      const btns = document.querySelectorAll('.toggle-btn');
+
+      if (view === 'glass') {
+        glassView.classList.remove('hidden');
+        flatView.classList.add('hidden');
+        btns[0].classList.add('active');
+        btns[1].classList.remove('active');
+      } else {
+        glassView.classList.add('hidden');
+        flatView.classList.remove('hidden');
+        btns[0].classList.remove('active');
+        btns[1].classList.add('active');
+      }
+    }
+  </script>
+
+</body>
+</html>
