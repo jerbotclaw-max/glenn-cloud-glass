@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>glenn.cloud — Depth Map Sizer</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e0e0e0;font-family:-apple-system,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px}
+h1{font-size:1.4rem;margin-bottom:5px;font-weight:400}
+.sub{color:#888;font-size:.85rem;margin-bottom:20px}
+.canvas-wrap{background:#111;border:1px solid #333;border-radius:8px;padding:20px;margin-bottom:15px;display:flex;justify-content:center;align-items:center;min-height:300px}
+canvas{max-width:100%;max-height:400px;image-rendering:pixelated}
+.controls{display:flex;gap:15px;align-items:center;flex-wrap:wrap;justify-content:center;margin-bottom:15px}
+label{font-size:.85rem;color:#aaa}
+input[type=range]{width:180px;accent-color:#4a9eff}
+.val{font-size:.85rem;color:#4a9eff;min-width:70px;text-align:left}
+.btns{display:flex;gap:10px}
+button{background:#4a9eff;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-size:.85rem}
+button:hover{background:#3a8eef}
+button.sec{background:#333}
+.info{font-size:.75rem;color:#666;margin-top:10px;text-align:center;max-width:400px}
+</style>
+</head>
+<body>
+<h1>Depth Map — Adjustable Sizing</h1>
+<p class="sub">Set your engraving dimensions, download, import to XCS</p>
+<div class="canvas-wrap"><canvas id="cv"></canvas></div>
+<div class="controls">
+<label>Size (px):</label>
+<input type="range" id="sz" min="100" max="2000" step="10" value="960">
+<span class="val" id="szv">960 × 960</span>
+</div>
+<div class="controls">
+<label>Invert:</label>
+<input type="checkbox" id="inv">
+<label style="margin-left:15px">Mirror:</label>
+<input type="checkbox" id="mir">
+</div>
+<div class="btns">
+<button onclick="dl()">Download PNG</button>
+<button class="sec" onclick="dl(true)">Download Inverted</button>
+</div>
+<p class="info">For xTool F2 Ultra UV sub-surface engraving. Darker pixels = shallower, brighter = deeper. Black background stays clear glass.</p>
+<script>
+const img=new Image();img.crossOrigin='anonymous';img.onload=()=>{draw()};img.src='glenn-depth-map.png';
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+function draw(){
+const sz=+document.getElementById('sz').value;
+const inv=document.getElementById('inv').checked;
+const mir=document.getElementById('mir').checked;
+document.getElementById('szv').textContent=sz+' × '+sz;
+cv.width=sz;cv.height=sz;
+ctx.save();
+if(mir){ctx.translate(sz,0);ctx.scale(-1,1)}
+ctx.drawImage(img,0,0,sz,sz);
+ctx.restore();
+if(inv){const d=ctx.getImageData(0,0,sz,sz);for(let i=0;i<d.data.length;i+=4){d.data[i]=255-d.data[i];d.data[i+1]=255-d.data[i+1];d.data[i+2]=255-d.data[i+2]}ctx.putImageData(d,0,0)}
+}
+document.getElementById('sz').oninput=draw;
+document.getElementById('inv').onchange=draw;
+document.getElementById('mir').onchange=draw;
+function dl(forceInv){
+const sz=+document.getElementById('sz').value;
+const inv=forceInv||document.getElementById('inv').checked;
+const mir=document.getElementById('mir').checked;
+const tc=document.createElement('canvas');tc.width=sz;tc.height=sz;
+const tx=tc.getContext('2d');
+tx.save();if(mir){tx.translate(sz,0);tx.scale(-1,1)}tx.drawImage(img,0,0,sz,sz);tx.restore();
+if(inv){const d=tx.getImageData(0,0,sz,sz);for(let i=0;i<d.data.length;i+=4){d.data[i]=255-d.data[i];d.data[i+1]=255-d.data[i+1];d.data[i+2]=255-d.data[i+2]}tx.putImageData(d,0,0)}
+const a=document.createElement('a');a.download='glenn-depth-'+sz+'px.png';a.href=tc.toDataURL('image/png');a.click()
+}
+</script>
+</body>
+</html>
